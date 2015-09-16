@@ -1,0 +1,31 @@
+<?php
+
+function datapipe_menu() {
+  $item['quipu_data_pipe/%/%/%/%'] = array(
+          'type' => MENU_CALLBACK,
+          'page callback' => 'datapipe_sorter',
+	  'page arguments' => array(1,2,3,4),
+	  'access arguments' => array('access content'),
+	  'delivery callback' => 'drupal_json_output',
+  );
+
+  return $item;
+};
+
+function datapipe_sorter($mode, $name, $email, $url) {
+  header('Access-Control-Allow-Origin: *');
+  switch ($mode) {
+    case ('listen_count'):
+      return 'The listen count has been updated';
+      break;
+    case ('new_recording'):
+      $person = array(
+        'name' => $name,
+	'email' => $email,
+	'url' => $url,
+      );
+      $result = vsprintf('The recording by %s has been added with the email %s. Their link is %s', $person);
+      return $result;
+      break;
+  }; 
+};

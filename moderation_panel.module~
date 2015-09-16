@@ -1,0 +1,19 @@
+<?php
+
+function web_hook_menu() {
+  $item['input/%] = array(
+          'type' => MENU_CALLBACK,
+          'page callback' => 'web_hook_inputs',
+	  'page arguments' => array(1),
+	  'access arguments' => array('access content'),
+	  'delivery callback' => 'drupal_json_output',
+  );
+
+  return $item;
+};
+
+function web_hook_inputs($mode) {
+  if ($mode == 'listen_count') {
+    return 'The listen count has been updated';
+  };
+;}
