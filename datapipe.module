@@ -16,7 +16,8 @@ function datapipe_sorter($mode, $name, $email, $url) {
   header('Access-Control-Allow-Origin: *');
   switch ($mode) {
     case ('listen_count'):
-      return 'The listen count has been updated';
+      $count = update_listen_count();
+      return $count;
       break;
     case ('new_recording'):
       $person = array(
@@ -28,4 +29,17 @@ function datapipe_sorter($mode, $name, $email, $url) {
       return $result;
       break;
   }; 
+};
+
+function update_listen_count() {
+  $filename = "public://output/listen_count.txt";
+  $f = fopen($filename, "r");
+  $contents = fread($f, filesize($filename));
+  $current_count = trim($contents, "\n");
+  $new_count = (String)($current_count + 1);
+  fclose($f);
+  $f = fopen($filename, "w");
+  $result = fwrite($f, $new_count);
+  fclose($f);
+  return $result;
 };
