@@ -20,12 +20,13 @@ function datapipe_sorter($mode, $name, $email, $url) {
       return $count;
       break;
     case ('new_recording'):
-      $person = array(
+/*      $person = array(
         'name' => $name,
 	'email' => $email,
 	'url' => $url,
       );
-      $result = vsprintf('The recording by %s has been added with the email %s. Their link is %s', $person);
+      $result = vsprintf('The recording by %s has been added with the email %s. Their link is %s', $person); */
+      $result = save_recording($name, $email, $url);
       return $result;
       break;
   }; 
@@ -40,6 +41,15 @@ function update_listen_count() {
   fclose($f);
   $f = fopen($filename, "w");
   $result = fwrite($f, $new_count);
+  fclose($f);
+  return $result;
+};
+
+function save_recording($name, $email, $url) {
+  $filename = "public://output/recording.txt";
+  $f = fopen($filename, "w");
+  $contents = "Name:".$name."\nEmail:".$email."\nUrl:".$url;
+  $result = fwrite($f, $contents);
   fclose($f);
   return $result;
 };
